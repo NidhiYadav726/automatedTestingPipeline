@@ -64,10 +64,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - name: create directory
-        run: |
+      # - name: create directory
+      #   run: |
           
-          mkdir TestArtifacts
+      #     mkdir TestArtifacts
 
       - name: install Node
         uses: actions/setup-node@v4
