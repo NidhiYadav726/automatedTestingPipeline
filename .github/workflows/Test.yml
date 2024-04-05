@@ -24,7 +24,7 @@ jobs:
 
       - name: Run Jmeter Test
         run: |
-            cd Jmeter
+            #cd Jmeter
             jmeter -n -t performance.jmx
             
       - name: Upload Results
