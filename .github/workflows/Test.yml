@@ -25,7 +25,7 @@ jobs:
       - name: Run Jmeter Test
         run: |
             cd Jmeter
-            Jmeter -n -t performance.jmx
+            jmeter -n -t performance.jmx
             
       - name: Upload Results
         uses: actions/upload-artifact@v4
