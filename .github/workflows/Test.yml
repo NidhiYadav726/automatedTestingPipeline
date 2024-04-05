@@ -3,8 +3,7 @@ name: Multiple Testing Framework Pipeline
 on:
   push:
      branches: [ "master" ]
-  # pull_request:
-  #   branches: [ "master" ]
+ 
   workflow_dispatch:
 
 jobs:
@@ -20,7 +19,7 @@ jobs:
       - name: run jmeter on github action
         uses:  sebiboga/run-jmeter-github-action@v0.0.5
         with:
-            test-plan-path: './Jmeter/performance.jmx'
+            test-plan-path: './performance.jmx'
 
       - name: Run Jmeter Test
         run: |
