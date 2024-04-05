@@ -2,9 +2,11 @@ name: Multiple Testing Framework Pipeline
 
 on:
   push:
-     branches: [ "master" ]
+     # branches: [ "master" ]
  
   workflow_dispatch:
+  #schedule:
+        #cron: 
 
 jobs:
   testJMeter:
