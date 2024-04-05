@@ -67,7 +67,7 @@ jobs:
       - name: create directory
         run: |
           
-          mkdir -p TestArtifacts
+          mkdir TestArtifacts
 
       - name: install Node
         uses: actions/setup-node@v4
@@ -83,12 +83,12 @@ jobs:
       - name: run Tests
         run: |
             cd Postman
-            newman run "Rest API CRUD Operations.postmanCollection.json.json" -e "New API Environment.postmanEnvironment.json" --reporters cli,htmlextra --reporter-htmlextra-export TestArtifacts/htmlreports.html
+            newman run "Rest API CRUD Operations.postmanCollection.json.json" -e "New API Environment.postmanEnvironment.json" -r cli,htmlextra --reporter-htmlextra-export testArtifacts/htmlreport.html
         
       - name: output results
         uses: actions/upload-artifact@v4
         with:
           name: Reports
-          path: TestArtifacts
+          path: testArtifacts
     
       
