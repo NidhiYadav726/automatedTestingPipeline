@@ -119,4 +119,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: upload-results
-          path: target/surefire-reports
+          path: RestAssured/target/surefire-reports
