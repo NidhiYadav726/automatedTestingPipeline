@@ -73,6 +73,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: create directory
         run: |
+          cd Postman
           mkdir TestArtifacts
 
       - name: install Node
