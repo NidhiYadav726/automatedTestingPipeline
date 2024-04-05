@@ -13,8 +13,7 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
-        with: 
-          ref: master
+
     
       - name: run jmeter on github action
         uses:  rbhadti94/apache-jmeter-action@v0.4.0
@@ -73,7 +72,7 @@ jobs:
       - name: install Node
         uses: actions/setup-node@v4
         with:
-          node-version: '21'
+          node-version: '20'
 
       - name: install Newman
         run: |
