@@ -65,3 +65,36 @@ jobs:
         run: |
            # Add your notification mechanism here (e.g., sending an email, Slack message)
             echo "Test failures occurred. Please check the test reports for details."
+
+  testPostman:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: create directory
+        run: |
+          mkdir TestArtifacts
+
+      - name: install Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '21'
+
+      - name: install Newman
+        run: |
+          cd Postman
+          npm install -g newman
+          npm install -g newman-reporter-htmlextra
+          
+      - name: run Tests
+        run: |
+            cd Postman
+            newman run "Rest API CRUD Operations.postmanCollection.json.json" -e "New API Environment.postmanEnvironment.json" --reporters cli,htmlextra --reporter-htmlextra-export testArtifacts/htmlreports.html
+        
+      - name: output results
+        uses: actions/upload-artifact@v4
+        with:
+          name: Reports
+          path: testArtifacts
+    
+      
