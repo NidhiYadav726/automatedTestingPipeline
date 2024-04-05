@@ -90,7 +90,7 @@ jobs:
       - name: run Tests
         run: |
             cd Postman
-            newman run "Rest API CRUD Operations.postmanCollection.json.json" -e "New API Environment.postmanEnvironment.json" --reporters cli,htmlextra --reporter-htmlextra-export testArtifacts/htmlreports.html
+            newman run "Postman/Rest API CRUD Operations.postmanCollection.json.json" -e "Postman/New API Environment.postmanEnvironment.json" --reporters cli,htmlextra --reporter-htmlextra-export Postman/TestArtifacts/htmlreports.html
         
       - name: output results
         uses: actions/upload-artifact@v4
