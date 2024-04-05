@@ -18,20 +18,20 @@ jobs:
           ref: master
   
       - name: run jmeter on github action
-        uses: sebiboga/run-jmeter-github-action@v0.0.5
+        uses:  sebiboga/run-jmeter-github-action@v0.0.5
         with:
             test-plan-path: './Jmeter/performance.jmx'
 
       - name: Run Jmeter Test
         run: |
-            #cd Jmeter
+            cd Jmeter
             jmeter -n -t performance.jmx
             
       - name: Upload Results
         uses: actions/upload-artifact@v4
         with:
           name: jmeter-results
-          path: result
+          path: Jmeter/result
 
   testNightwatch:
     runs-on: ubuntu-latest
