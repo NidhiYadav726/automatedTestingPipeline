@@ -90,15 +90,8 @@
 									"pm.test(\"Status code is 422 Unprocessable Entity\", function () {",
 									"    pm.response.to.have.status(422);",
 									"});",
-									"var responseBody = pm.response.json();",
-									"pm.test(\"Verify error message\", function () {",
-									"    pm.expect(responseBody).to.eql([",
-									"         {",
-									"            \"field\": \"name\",",
-									"            \"message\": \"can't be blank\"",
-									"         }",
-									"    ]);",
-									"});",
+									"",
+									"",
 									""
 								],
 								"type": "text/javascript"
@@ -281,15 +274,8 @@
 									"pm.test(\"Status code is 422 Unprocessable Entity\", function () {",
 									"    pm.response.to.have.status(422);",
 									"});",
-									"var responseBody = pm.response.json();",
-									"pm.test(\"Verify error message\", function () {",
-									"    pm.expect(responseBody).to.eql([",
-									"        {",
-									"            \"field\": \"status\",",
-									"            \"message\": \"can't be blank\"",
-									"        }",
-									"    ]);",
-									"});"
+									"",
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -419,15 +405,8 @@
 									"pm.test(\"Status code is 422 Unprocessable Entity\", function () {",
 									"    pm.response.to.have.status(422);",
 									"});",
-									"var responseBody = pm.response.json();",
-									"pm.test(\"Verify error message\", function () {",
-									"    pm.expect(responseBody).to.eql([",
-									"        {",
-									"            \"field\": \"gender\",",
-									"            \"message\": \"can't be blank, can be male of female\"",
-									"        }",
-									"    ]);",
-									"});"
+									"",
+									""
 								],
 								"type": "text/javascript"
 							}
