@@ -59,12 +59,6 @@ jobs:
         with:
           name: test-results
           path: Nightwatch/tests_output 
-          
-      - name: Send notifications
-        if: failure() 
-        run: |
-           # Add your notification mechanism here (e.g., sending an email, Slack message)
-            echo "Test failures occurred. Please check the test reports for details."
 
   testPostman:
     runs-on: ubuntu-latest
@@ -73,7 +67,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: create directory
         run: |
-          cd Postman
+          
           mkdir TestArtifacts
 
       - name: install Node
@@ -90,12 +84,12 @@ jobs:
       - name: run Tests
         run: |
             cd Postman
-            newman run "Postman/Rest API CRUD Operations.postmanCollection.json.json" -e "Postman/New API Environment.postmanEnvironment.json" --reporters cli,htmlextra --reporter-htmlextra-export Postman/TestArtifacts/htmlreports.html
+            newman run "Rest API CRUD Operations.postmanCollection.json.json" -e "New API Environment.postmanEnvironment.json" --reporters cli,htmlextra --reporter-htmlextra-export testArtifacts/htmlreports.html
         
       - name: output results
         uses: actions/upload-artifact@v4
         with:
           name: Reports
-          path: Postman/TestArtifacts
+          path: testArtifacts
     
       
