@@ -1,0 +1,39 @@
+{
+	"id": "70b40c58-fa12-4d8e-92cb-13011d4ad4e5",
+	"name": "New API Environment",
+	"values": [
+		{
+			"key": "token",
+			"value": "5dc32152a465cc9b04dec8c4cca6e6ac9c2eaf6a0064d960cde7ab93c6caa055",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "id",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "baseUrl",
+			"value": "https://gorest.co.in",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "name",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "email",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		}
+	],
+	"_postman_variable_scope": "environment",
+	"_postman_exported_at": "2024-03-05T18:18:55.983Z",
+	"_postman_exported_using": "Postman/10.23.8"
+}

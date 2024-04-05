@@ -1,0 +1,1521 @@
+{
+	"info": {
+		"_postman_id": "8e57fdff-6e5b-4388-b9e8-0abd5c0ade59",
+		"name": "Rest APIs CRUD Operations",
+		"description": "a Postman collection to create a dynamic workflow by chaining the CRUD requests and to test the Create, Update, Fetch and Delete operations of Rest APIs.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33288142"
+	},
+	"item": [
+		{
+			"name": "Create User",
+			"item": [
+				{
+					"name": "Create User TC_001 [P] Create user with valid name and email",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201 Created\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"pm.test(\"Verify userId is present and set as environment variable\", function () {",
+									"    pm.expect(pm.response.json()).to.have.property(\"id\");",
+									"var userId = pm.response.json();",
+									"pm.environment.set(\"id\", userId.id);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var randomInt = Math.floor(Math.random() * 1000);",
+									"var name = \"max\" + randomInt;",
+									"var email = \"max\" + randomInt + \"@gmail.com\";",
+									"pm.environment.set(\"name\", name);",
+									"pm.environment.set(\"email\", email);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer 5dc32152a465cc9b04dec8c4cca6e6ac9c2eaf6a0064d960cde7ab93c6caa055"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"{{name}}\",\n    \"gender\": \"male\",\n    \"email\": \"{{email}}\",\n    \"status\": \"active\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/public/v2/users",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"public",
+								"v2",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create User TC_002 [N] Create user with valid email and invalid name",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 422 Unprocessable Entity\", function () {",
+									"    pm.response.to.have.status(422);",
+									"});",
+									"var responseBody = pm.response.json();",
+									"pm.test(\"Verify error message\", function () {",
+									"    pm.expect(responseBody).to.eql([",
+									"         {",
+									"            \"field\": \"name\",",
+									"            \"message\": \"can't be blank\"",
+									"         }",
+									"    ]);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer 5dc32152a465cc9b04dec8c4cca6e6ac9c2eaf6a0064d960cde7ab93c6caa055"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": null,\n    \"gender\": \"male\",\n    \"email\": \"max@gmail.com\",\n    \"status\": \"active\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/public/v2/users",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"public",
+								"v2",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create User TC_003 [N] Create user with valid name and invalid email",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 422 Unprocessable Entity\", function () {",
+									"    pm.response.to.have.status(422);",
+									"});",
+									"var responseBody = pm.response.json();",
+									"pm.test(\"Verify error message\", function () {",
+									"    pm.expect(responseBody).to.eql([",
+									"        {",
+									"            \"field\": \"email\",",
+									"            \"message\": \"can't be blank\"",
+									"        }",
+									"    ]);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer 5dc32152a465cc9b04dec8c4cca6e6ac9c2eaf6a0064d960cde7ab93c6caa055"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"max\",\n    \"gender\": \"male\",\n    \"email\": null,\n    \"status\": \"active\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/public/v2/users",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"public",
+								"v2",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create User TC_004 [N] Create user with invalid name and invalid email",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 422 Unprocessable Entity\", function () {",
+									"    pm.response.to.have.status(422);",
+									"});",
+									"var responseBody = pm.response.json();",
+									"",
+									"    ",
+									"    pm.test(\"Verify error message\", function () {",
+									"        pm.expect(responseBody).to.eql([",
+									"            {",
+									"                \"field\": \"email\",",
+									"                \"message\": \"can't be blank\"",
+									"            },",
+									"            {",
+									"                \"field\": \"name\",",
+									"                \"message\": \"can't be blank\"",
+									"            }",
+									"",
+									"     ]);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer 5dc32152a465cc9b04dec8c4cca6e6ac9c2eaf6a0064d960cde7ab93c6caa055"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": null,\n    \"gender\": \"male\",\n    \"email\": null,\n    \"status\": \"active\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/public/v2/users",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"public",
+								"v2",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create User TC_005 [N] Create user with invalid status input",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 422 Unprocessable Entity\", function () {",
+									"    pm.response.to.have.status(422);",
+									"});",
+									"var responseBody = pm.response.json();",
+									"pm.test(\"Verify error message\", function () {",
+									"    pm.expect(responseBody).to.eql([",
+									"        {",
+									"            \"field\": \"status\",",
+									"            \"message\": \"can't be blank\"",
+									"        }",
+									"    ]);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer 5dc32152a465cc9b04dec8c4cca6e6ac9c2eaf6a0064d960cde7ab93c6caa055"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"max\",\n    \"gender\": \"male\",\n    \"email\": \"max@gmail.com\",\n    \"status\": null\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/public/v2/users",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"public",
+								"v2",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create User TC_006 [N] Create user with null input values",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 422 Unprocessable Entity\", function () {",
+									"    pm.response.to.have.status(422);",
+									"});",
+									"var responseBody = pm.response.json();",
+									"",
+									"    ",
+									"    pm.test(\"Verify error message\", function () {",
+									"        pm.expect(responseBody).to.eql([",
+									"            {",
+									"                \"field\": \"email\",",
+									"                \"message\": \"can't be blank\"",
+									"            },",
+									"            {",
+									"                \"field\": \"name\",",
+									"                \"message\": \"can't be blank\"",
+									"            },",
+									"            {",
+									"                \"field\": \"gender\",",
+									"                \"message\": \"can't be blank, can be male of female\"",
+									"            },",
+									"            {",
+									"                \"field\": \"status\",",
+									"                \"message\": \"can't be blank\"",
+									"            }",
+									"",
+									"        ]);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer 5dc32152a465cc9b04dec8c4cca6e6ac9c2eaf6a0064d960cde7ab93c6caa055"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": null,\n    \"gender\": null,\n    \"email\": null,\n    \"status\": null\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/public/v2/users/",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"public",
+								"v2",
+								"users",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create user TC_007 [N] Create User with invalid gender input",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 422 Unprocessable Entity\", function () {",
+									"    pm.response.to.have.status(422);",
+									"});",
+									"var responseBody = pm.response.json();",
+									"pm.test(\"Verify error message\", function () {",
+									"    pm.expect(responseBody).to.eql([",
+									"        {",
+									"            \"field\": \"gender\",",
+									"            \"message\": \"can't be blank, can be male of female\"",
+									"        }",
+									"    ]);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer 5dc32152a465cc9b04dec8c4cca6e6ac9c2eaf6a0064d960cde7ab93c6caa055"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"max\",\n    \"gender\": null,\n    \"email\": \"max@gmail.com\",\n    \"status\": \"active\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/public/v2/users",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"public",
+								"v2",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create User TC_008 [N] Create user with no authorization token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 401 Unauthorized\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									"var responseBody = pm.response.json();",
+									"pm.test(\"Verify error message\", function () {",
+									"    pm.expect(responseBody.message).to.include(\"Authentication failed\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer 5dc32152a465cc9b04dec8c4cca6e6ac9c2eaf6a0064d960cde7ab93c6caa055",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"max\",\n    \"gender\": \"male\",\n    \"email\": \"max@gmail.com\",\n    \"status\": \"active\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/public/v2/users",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"public",
+								"v2",
+								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Update User",
+			"item": [
+				{
+					"name": "Update User TC_001 [P] Update all user details of existing user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 OK\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Verify updated user details\", function () {",
+									"    pm.expect(pm.response.json()).to.have.property(\"id\");",
+									"     pm.expect(pm.response.json()).to.have.property(\"name\").that.is.a(\"string\").and.not.equal(\"1234\");",
+									"    pm.expect(pm.response.json()).to.have.property(\"gender\").that.is.oneOf([\"male\", \"female\"]);",
+									"    pm.expect(pm.response.json()).to.have.property(\"email\").that.is.a(\"string\").and.contains(\"@gmail.com\");",
+									"    pm.expect(pm.response.json()).to.have.property(\"status\").that.is.oneOf([\"active\", \"inactive\"]);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer 5dc32152a465cc9b04dec8c4cca6e6ac9c2eaf6a0064d960cde7ab93c6caa055"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"samy\",\n    \"gender\": \"female\",\n    \"email\": \"samy091@gmail.com\",\n    \"status\": \"inactive\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/public/v2/users/{{id}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"public",
+								"v2",
+								"users",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User TC_002 [P] Update user to get previous updated data when given empty request body",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200OK\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer 5dc32152a465cc9b04dec8c4cca6e6ac9c2eaf6a0064d960cde7ab93c6caa055"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseUrl}}/public/v2/users/{{id}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"public",
+								"v2",
+								"users",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User TC_003 [N] Update user's email with invalid format",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 422 Unprocessable Entity\", function () {",
+									"    pm.response.to.have.status(422);",
+									"});",
+									"var responseBody = pm.response.json();",
+									"pm.test(\"Verify error message\", function () {",
+									"    pm.expect(responseBody).to.eql([",
+									"        {",
+									"            \"field\": \"email\",",
+									"            \"message\": \"is invalid\"",
+									"        }",
+									"    ]);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer 5dc32152a465cc9b04dec8c4cca6e6ac9c2eaf6a0064d960cde7ab93c6caa055"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"samy\",\n    \"email\": \"samy.gmail.com\",\n    \"status\": \"inactive\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/public/v2/users/{{id}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"public",
+								"v2",
+								"users",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User TC_004 [N] Update user's name with invalid format",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 422 Unprocessable Entity\", function () {",
+									"    pm.response.to.have.status(422);",
+									"});",
+									"var responseBody = pm.response.json();",
+									"pm.test(\"Verify error message\", function () {",
+									"    pm.expect(responseBody).to.eql([",
+									"        {",
+									"            \"field\": \"name\",",
+									"            \"message\": \"can't be blank\"",
+									"        }",
+									"    ]);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer 5dc32152a465cc9b04dec8c4cca6e6ac9c2eaf6a0064d960cde7ab93c6caa055"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": null,\n    \"email\": \"samy091@gmail.com\",\n    \"status\": \"inactive\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/public/v2/users/{{id}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"public",
+								"v2",
+								"users",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User TC_005  [N] Update user with no authorization token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404 Not Found\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});",
+									"var responseBody = pm.response.json();",
+									"pm.test(\"Verify error message\", function () {",
+									"    pm.expect(responseBody.message).to.include(\"Resource not found\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer 5dc32152a465cc9b04dec8c4cca6e6ac9c2eaf6a0064d960cde7ab93c6caa055",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"samy\",\n    \"email\": \"samy091@gmail.com\",\n    \"status\": \"active\",\n    \"gender\": \"female\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/public/v2/users/{{id}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"public",
+								"v2",
+								"users",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User TC_006 [N] Update user with invalid authorization token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 401 Unauthorized\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									"var responseBody = pm.response.json();",
+									"pm.test(\"Verify error message\", function () {",
+									"    pm.expect(responseBody.message).to.include(\"Invalid token\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer  5dc32152a465cc9b04dec8c4cca6e6ac9c2eaf6a0064d960cde7ab93c6ca"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"samy\",\n    \"gender\": \"female\",\n    \"email\": \"samy091@gmail.com\",\n    \"status\": \"inactive\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/public/v2/users/{{id}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"public",
+								"v2",
+								"users",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User TC_007 [N] Update details of non-existing user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404 Not Found\", function () {",
+									"    pm.response.to.not.have.status(200);",
+									"});",
+									"var responseBody = pm.response.json();",
+									"pm.test(\"Verify error message\", function () {",
+									"    pm.expect(responseBody.message).to.include(\"Resource not found\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer 5dc32152a465cc9b04dec8c4cca6e6ac9c2eaf6a0064d960cde7ab93c6caa055"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"samy\",\n    \"gender\": \"female\",\n    \"email\": \"samy091@gmail.com\",\n    \"status\": \"inactive\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/public/v2/users/87562",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"public",
+								"v2",
+								"users",
+								"87562"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Fetch User",
+			"item": [
+				{
+					"name": "Fetch User TC_001 [P] Fetch user details using valid id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200OK\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Verify fetched user details\", function () {",
+									"    pm.expect(pm.response.json()).to.have.property(\"id\");",
+									"    pm.expect(pm.response.json()).to.have.property(\"name\").that.is.a(\"string\");",
+									"    pm.expect(pm.response.json()).to.have.property(\"gender\").that.is.oneOf([\"male\", \"female\"]);",
+									"    pm.expect(pm.response.json()).to.have.property(\"email\").that.is.a(\"string\").and.contains(\"@\");",
+									"    pm.expect(pm.response.json()).to.have.property(\"status\").that.is.oneOf([\"active\", \"inactive\"]);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer 5dc32152a465cc9b04dec8c4cca6e6ac9c2eaf6a0064d960cde7ab93c6caa055"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/public/v2/users/{{id}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"public",
+								"v2",
+								"users",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Fetch User TC_002 [P] Fetch list of users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 OK\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer 5dc32152a465cc9b04dec8c4cca6e6ac9c2eaf6a0064d960cde7ab93c6caa055"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/public/v2/users/",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"public",
+								"v2",
+								"users",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Fetch User TC_003 [N] Fetch user details with invalid authorization Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 401 Unauthorized Token\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									"var responseBody = pm.response.json();",
+									"pm.test(\"Verify error message\", function () {",
+									"    pm.expect(responseBody.message).to.include(\"Invalid token\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer  5dc32152a465cc9b04dec8c4cca6e6ac9c2eaf6a0064d960cde7ab93c6caa",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/public/v2/users/{{id}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"public",
+								"v2",
+								"users",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Fetch User TC_004 [N] Fetch user with no authorization token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404 Not Found\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});",
+									"var responseBody = pm.response.json();",
+									"pm.test(\"Verify error message\", function () {",
+									"    pm.expect(responseBody.message).to.include(\"Resource not found\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer 5dc32152a465cc9b04dec8c4cca6e6ac9c2eaf6a0064d960cde7ab93c6caa055",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/public/v2/users/{{id}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"public",
+								"v2",
+								"users",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Fetch User TC_005 [N] Fetch user details of non-existing user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404 Not Found\", function () {",
+									"    pm.response.to.not.have.status(200);",
+									"});",
+									"var responseBody = pm.response.json();",
+									"pm.test(\"Verify error message\", function () {",
+									"    pm.expect(responseBody.message).to.include(\"Resource not found\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer 5dc32152a465cc9b04dec8c4cca6e6ac9c2eaf6a0064d960cde7ab93c6caa055",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/public/v2/users/87561",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"public",
+								"v2",
+								"users",
+								"87561"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Fetch User TC_006 [P] Fetch user detail using specific params",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200OK\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Verify status is present in fetched data\", function () {",
+									"    pm.expect(pm.response.json()).to.have.property(\"status\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer 5dc32152a465cc9b04dec8c4cca6e6ac9c2eaf6a0064d960cde7ab93c6caa055"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/public/v2/users/{{id}}?status=active",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"public",
+								"v2",
+								"users",
+								"{{id}}"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "active"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Delete User",
+			"item": [
+				{
+					"name": "Delete User TC_001 [P] Delete existing user using valid id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 204 No Content\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});",
+									"pm.test(\"Verify empty response body for delete\", function () {",
+									"    pm.expect(pm.response.text()).to.be.empty;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer 5dc32152a465cc9b04dec8c4cca6e6ac9c2eaf6a0064d960cde7ab93c6caa055"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/public/v2/users/{{id}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"public",
+								"v2",
+								"users",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User TC_003 [N] Delete user with no authorization token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404 Not Found\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});",
+									"var responseBody = pm.response.json();",
+									"pm.test(\"Verify error message\", function () {",
+									"    pm.expect(responseBody.message).to.include(\"Resource not found\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer ACCESS-TOKEN",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/public/v2/users/{{id}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"public",
+								"v2",
+								"users",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User TC_004 [N] Delete user with invalid authorization token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 401 Unauthorized Token\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									"var responseBody = pm.response.json();",
+									"pm.test(\"Verify error message\", function () {",
+									"    pm.expect(responseBody.message).to.include(\"Invalid token\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer  5dc32152a465cc9b04dec8c4cca6e6ac9c2eaf6a00660cde7ab93c6caa055"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/public/v2/users/{{id}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"public",
+								"v2",
+								"users",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User TC_005 [N] Delete user using invalid id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404 Not Found\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});",
+									"var responseBody = pm.response.json();",
+									"pm.test(\"Verify error message\", function () {",
+									"    pm.expect(responseBody.message).to.include(\"Resource not found\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer 5dc32152a465cc9b04dec8c4cca6e6ac9c2eaf6a0064d960cde7ab93c6caa055"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/public/v2/users/aab88",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"public",
+								"v2",
+								"users",
+								"aab88"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User TC_006 [N] Delete a non-existing user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404 Not Found\", function () {",
+									"    pm.response.to.not.have.status(204);",
+									"    ",
+									"});",
+									"var responseBody = pm.response.json();",
+									"pm.test(\"Verify error message\", function () {",
+									"    pm.expect(responseBody.message).to.include(\"Resource not found\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer 5dc32152a465cc9b04dec8c4cca6e6ac9c2eaf6a0064d960cde7ab93c6caa055",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/public/v2/users/{{id}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"public",
+								"v2",
+								"users",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
