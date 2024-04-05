@@ -1,0 +1,72 @@
+name: Multiple Testing Framework Pipeline
+
+on:
+  push:
+     branches: [ "master" ]
+  # pull_request:
+  #   branches: [ "master" ]
+  workflow_dispatch:
+
+jobs:
+  testJMeter:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with: 
+          ref: master
+  
+      - name: run jmeter on github action
+        uses: sebiboga/run-jmeter-github-action@v0.0.5
+        with:
+            test-plan-path: './performance.jmx'
+
+      - name: Run Jmeter Test
+        run: |
+            cd Jmeter
+            Jmeter -n -t performance.jmx
+            
+      - name: Upload Results
+        uses: actions/upload-artifact@v4
+        with:
+          name: jmeter-results
+          path: result
+
+  testNightwatch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with: 
+          cache: 'npm'
+            
+      - name: 'Use Node.js ${{ matrix.node-version }}'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 21
+          # cache: npm
+            
+      - name: Install Dependency npm-install
+        run: |
+            cd Nightwatch
+            npm ci
+            sudo apt-get install xvfb
+                 
+      - name: Run Nightwatch tests
+        run: |
+             cd Nightwatch
+             xvfb-run --auto-servernum npm test -- --env chrome
+            
+      - name: Archive test results
+        if: always()  
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: Nightwatch/tests_output 
+          
+      - name: Send notifications
+        if: failure() 
+        run: |
+           # Add your notification mechanism here (e.g., sending an email, Slack message)
+            echo "Test failures occurred. Please check the test reports for details."
