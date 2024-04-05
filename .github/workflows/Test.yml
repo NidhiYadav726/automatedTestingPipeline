@@ -20,7 +20,7 @@ jobs:
       - name: run jmeter on github action
         uses: sebiboga/run-jmeter-github-action@v0.0.5
         with:
-            test-plan-path: './performance.jmx'
+            test-plan-path: './Jmeter/performance.jmx'
 
       - name: Run Jmeter Test
         run: |
