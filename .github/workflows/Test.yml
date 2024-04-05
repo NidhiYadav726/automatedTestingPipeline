@@ -15,14 +15,13 @@ jobs:
         uses: actions/checkout@v4
         with: 
           ref: master
-  
+    
       - name: run jmeter on github action
-        uses:   rbhadti94/apache-jmeter-action@v0.7.0
+        uses:  rbhadti94/apache-jmeter-action@v0.4.0
         with:
-            test-plan-path: './Jmeter/performance.jmx'
-
+            testFilePath: './Jmeter/performance.jmx'
+            outputReportsFolder: 'Jmeter/result'
      
-            
       - name: Upload Results
         uses: actions/upload-artifact@v4
         with:
