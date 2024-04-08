@@ -116,5 +116,5 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: upload-results
+          name: restAssured-results
           path: RestAssured/target/surefire-reports
