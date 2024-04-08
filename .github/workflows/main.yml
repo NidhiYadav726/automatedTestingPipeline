@@ -117,7 +117,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: restAssured-results
-          path: RestAssured/target/surefire-reports
+          path: RestAssured/target/surefire-reports/crudOperations.Test
 
   Selenium_test:
       runs-on: ubuntu-latest
