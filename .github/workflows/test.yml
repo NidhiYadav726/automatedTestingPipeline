@@ -9,27 +9,27 @@ on:
         #cron: 
 
 jobs:
-  testJMeter:
+  Jmeter_test:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
-
-    
+      
       - name: run jmeter on github action
         uses:  rbhadti94/apache-jmeter-action@v0.4.0
         with:
             testFilePath: './Jmeter/performance.jmx'
             outputReportsFolder: 'Jmeter/result'
      
-      - name: Upload Results
+      - name: Archive test results
+        if: always()  
         uses: actions/upload-artifact@v4
         with:
           name: jmeter-results
           path: Jmeter/result
 
-  testNightwatch:
+  Nightwatch_test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -41,8 +41,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 21
-          # cache: npm
-            
+      
       - name: Install Dependency npm-install
         run: |
             cd Nightwatch
@@ -58,19 +57,16 @@ jobs:
         if: always()  
         uses: actions/upload-artifact@v4
         with:
-          name: test-results
+          name: nightwatch-results
           path: Nightwatch/tests_output 
 
-  testPostman:
+  Postman_test:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
-      # - name: create directory
-      #   run: |
-          
-      #     mkdir TestArtifacts
-
+      - name: Checkout code
+        uses: actions/checkout@v4
+ 
       - name: install Node
         uses: actions/setup-node@v4
         with:
@@ -82,19 +78,19 @@ jobs:
           npm install -g newman
           npm install -g newman-reporter-htmlextra
           
-      - name: run Tests
+      - name: run  Postman Tests
         run: |
             cd Postman
             newman run "Rest API CRUD Operations.postmanCollection.json.json" -e "New API Environment.postmanEnvironment.json" -r cli,htmlextra --reporter-htmlextra-export testArtifacts/htmlreport.html
         
-      - name: output results
+      - name: Archive test results
+        if: always()  
         uses: actions/upload-artifact@v4
         with:
-          name: Reports
+          name: postman-results
           path: Postman/testArtifacts
     
-  RestAssured:
-  
+  RestAssured_test:
     runs-on: ubuntu-latest
 
     steps:
