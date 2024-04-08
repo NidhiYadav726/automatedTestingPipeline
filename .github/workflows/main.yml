@@ -3,8 +3,8 @@ name: Multiple Testing Framework Pipeline
 on:
   push:
   workflow_dispatch:
-  # schedule:
-  #    - cron: '0 10 * * 3' # run at 10 am every Wednesday  
+  schedule:
+     - cron: '0 10 * * 3' # run at 10 am every Wednesday  
 
 jobs:
   Jmeter_test:
